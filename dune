@@ -1,0 +1,5 @@
+(library
+ (name tries_staged)
+ (public_name tries-staged)
+ (libraries staged-generics imp)
+ (modules Trie))

@@ -1,0 +1,24 @@
+opam-version: "2.0"
+name: "tries-staged"
+synopsis: "Efficient generic implementation of tries"
+version: "dev"
+maintainer: "yallop@gmail.com"
+authors: ["Patrick Reader"]
+homepage: "https://github.com/modular-implicits/tries-staged"
+dev-repo: "git+https://github.com/modular-implicits/tries-staged.git"
+bug-reports: "http://github.com/modular-implicits/tries-staged/issues"
+license: "GPL-3.0-only"
+build: [
+  ["dune" "subst"] {dev}
+  ["dune" "build" "-p" name "-j" jobs]
+  ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+]
+
+depends: [
+   "dune" {build}
+   "staged-generics"
+   "imp"
+   "ocaml-variants"
+     { = "4.02.1+modular-implicits" | = "4.02.1+modular-implicits-ber" }
+]
+
