@@ -1,5 +1,5 @@
 (test
  (name test)
- (modules test)
+ (modules test_support test)
  (modes native)
  (libraries tries-staged))
