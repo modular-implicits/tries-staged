@@ -41,14 +41,14 @@ implicit module Trie_Unit {T: Unit} : GenericTrie
   let empty () = .< Wrapper.T None >.
 end
 
-let map_code (f: 'a code -> 'b code) : 'a list code -> 'b list code
-  = let rec helper a = .<
-      match .~a with
+let map_code (type a) (type b) (f: a code -> b code) : a list code -> b list code
+  = fun l -> .<
+      let rec loop = function
         | [] -> []
-        | x :: xs -> .~(f .< x >.) :: .~(helper .< xs >.)
-      >.
-    in helper
-
+        | x :: xs -> .~(f .< x >.) :: loop xs
+      in loop .~l
+    >.
+  
 let fstmap_code(f: 'a code -> 'b code) (t: ('a * 'c) code) : ('b * 'c) code
   = .< let (a, c) = .~t in (.~(f .< a >.), c) >.
 
@@ -178,18 +178,15 @@ end
    so that you don't have to explicitly write out the structure of your generic type.
 
    Ideally we would just be able to write something like
-   implicit module My_mapping = (Derive {_} : S.Mapping with type t = xyz)
+   implicit module My_mapping = Generic.(Derive {_} : S.Mapping with type t = xyz)
    and have the compiler infer what that _ should be.
 
-   However, this {_} feature doesn't exist.
-   Also, that would then create an infinite loop of instances with Derive.
-   Instead, you have to locally open Generic so that you get the resulting S.Mapping instance
-   outside of the local open. This is also not possible without first-class modules.
-   Both of these problems are solved by using this `derive` function.
+   However, this {_} feature doesn't exist, and there are also no local opens in module expressions.
+   Both of these problems are solved by using this `derive` function using first-class modules.
 
    All in all, you should write this:
    implicit module My_mapping =
-     ((val let open Generic in derive ()): S.Mapping with type k = <your key type>)
+     ((val Generic.(derive ())): S.Mapping with type k = <your key type>)
 
    Note also that you will need instances of S.Mapping in implicit scope for any of the basic types
    that you want to use non-trie maps for.
