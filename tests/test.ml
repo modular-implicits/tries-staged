@@ -2,8 +2,8 @@ type myADT = int * unit
 
 let () =
   let open Tries_staged in
-  let open Staged_generics.Classes in
   let open [@warning "-33"] Staged_generics.Instances in
+  let open [@warning "-33"] Imp.Any in
   let open [@warning "-33"] Imp.Data in
   let open [@warning "-33"] Assoc_list in
   let implicit module My_mapping =
