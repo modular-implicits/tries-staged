@@ -2,4 +2,4 @@
  (name tries_staged)
  (public_name tries-staged)
  (libraries staged-generics imp)
- (modules Trie))
+ (modules Array Assoc_list Generic Hashtbl' Map' S Utils Wrapper))

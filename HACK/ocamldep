@@ -1,0 +1,4 @@
+#!/bin/sh
+# avoid calling ourselves again
+PATH=${PATH#*HACK:}
+exec ocamldep "$@"
